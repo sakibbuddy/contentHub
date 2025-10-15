@@ -67,6 +67,12 @@ Visit [http://localhost:8000](http://localhost:8000) in your browser.
   npm run dev
   ```
 
+
+---
+Credentials
+username: john@doe.com
+password: Test@12345
+
 ---
 
 ## Troubleshooting
@@ -77,10 +83,6 @@ Visit [http://localhost:8000](http://localhost:8000) in your browser.
 - For more info, see the [Laravel documentation](https://laravel.com/docs/12.x/installation).
 
 ---
-
-## Credits
-- Built with Laravel Daily Starter Kit
-- UI: Blade, Alpine.js, Tailwind CSS
 
 ---
 
