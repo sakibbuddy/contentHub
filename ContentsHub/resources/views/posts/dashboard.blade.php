@@ -7,7 +7,26 @@
         </a>
     </x-slot>
 
-    <div class="space-y-6">
+    <div x-data="{ show: false, post: null }" x-init="
+        if (window.Echo) {
+            Echo.channel('posts')
+                .listen('PostCreated', (e) => {
+                    show = true;
+                    post = e;
+                    setTimeout(() => show = false, 5000);
+                });
+        }
+    " class="space-y-6">
+        <template x-if="show">
+            <div class="mb-4">
+                <div class="bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded relative flex items-center" role="alert">
+                    <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2l4-4m6 2a9 9 0 11-18 0a9 9 0 0118 0z" /></svg>
+                    <span class="block sm:inline font-semibold">New post created:</span>
+                    <span class="ml-2" x-text="post ? post.title : ''"></span>
+                </div>
+            </div>
+        </template>
+
         @forelse($posts as $post)
             <x-post-card :post="$post" />
         @empty

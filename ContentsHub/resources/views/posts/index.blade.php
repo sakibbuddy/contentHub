@@ -32,6 +32,14 @@
         </div>
     @endguest --}}
 
+    @if(session('success'))
+        <div class="mb-6">
+            <div class="bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded relative" role="alert">
+                <span class="block sm:inline">{{ session('success') }}</span>
+            </div>
+        </div>
+    @endif
+
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Main Content -->
         <div class="lg:col-span-2 space-y-6">

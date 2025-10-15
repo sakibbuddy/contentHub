@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Models\Post;
 use App\Models\User;
 use App\Services\PostService;
+use App\Events\PostCreated;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -32,6 +33,7 @@ class CreatePostJob implements ShouldQueue
      */
     public function handle(PostService $postService)
     {
-        $postService->createPost($this->user, $this->data);
+        $post = $postService->createPost($this->user, $this->data);
+        event(new PostCreated($post));
     }
 }
