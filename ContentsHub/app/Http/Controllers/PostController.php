@@ -5,11 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
+use App\Services\PostService;
+use App\Jobs\CreatePostJob;
+
 
 class PostController extends Controller
 {
-    use AuthorizesRequests;
+    protected $postService;
+
+    public function __construct(PostService $postService)
+    {
+        $this->postService = $postService;
+    }
 
     public function home()
     {
@@ -45,13 +53,11 @@ class PostController extends Controller
             'status' => 'required|in:draft,published'
         ]);
 
-        $post = Auth::user()->posts()->create([
-            ...$validated,
-            'published_at' => $validated['status'] === 'published' ? now() : null,
-        ]);
+        // Dispatch the queued job
+        CreatePostJob::dispatch(Auth::user(), $validated);
 
-        return redirect()->route('posts.show', $post)
-            ->with('success', 'Post created successfully.');
+        return redirect()->route('posts.index')
+            ->with('success', 'Post creation is being processed.');
     }
 
     public function show(Post $post)
@@ -82,12 +88,7 @@ class PostController extends Controller
             'status' => 'required|in:draft,published'
         ]);
 
-        // Set published_at if post is being published for the first time
-        if ($validated['status'] === 'published' && !$post->published_at) {
-            $validated['published_at'] = now();
-        }
-
-        $post->update($validated);
+        $this->postService->updatePost($post, $validated);
 
         return redirect()->route('posts.show', $post)
             ->with('success', 'Post updated successfully.');
@@ -97,7 +98,7 @@ class PostController extends Controller
     {
         $this->authorize('delete', $post);
 
-        $post->delete();
+        $this->postService->deletePost($post);
 
         return redirect()->route('posts.index')
             ->with('success', 'Post deleted successfully.');
@@ -106,7 +107,7 @@ class PostController extends Controller
     public function dashboard()
     {
         $posts = Post::where('user_id', Auth::id())
-            ->latest()
+            //->latest()
             ->paginate(10);
 
         return view('posts.dashboard', compact('posts'));

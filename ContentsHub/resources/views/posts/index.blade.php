@@ -15,7 +15,7 @@
         @endauth
     </x-slot>
 
-    @guest
+    {{-- @guest
         <div class="bg-gradient-to-r from-blue-500 to-blue-700 dark:from-blue-700 dark:to-blue-900 text-white rounded-lg shadow-lg p-6 mb-8">
             <div class="max-w-3xl mx-auto text-center">
                 <h1 class="text-3xl font-bold mb-4">Share Your Thoughts with the World</h1>
@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-    @endguest
+    @endguest --}}
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Main Content -->
