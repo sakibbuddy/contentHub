@@ -8,13 +8,13 @@ Welcome to ContentHub! Follow these steps to set up and run the project locally.
 - PHP >= 8.2
 - Composer
 - Node.js & npm
-- SQLite/MySQL/PostgreSQL (for database)
+- SQLite
 
 ---
 
 ## 1. Clone the Repository
 ```
-git clone <your-repo-url>
+git clone https://github.com/sakibbuddy/contentHub.git
 cd ContentsHub
 ```
 
